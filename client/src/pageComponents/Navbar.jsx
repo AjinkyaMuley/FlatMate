@@ -50,7 +50,7 @@ const Navbar = () => {
               <div className="flex items-center space-x-3">
                 <HomeIcon className="h-6 w-6 text-blue-600 transition-colors hover:text-blue-700" />
                 <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                  RoommateFinder
+                  FlatMate
                 </span>
               </div>
             </Link>
