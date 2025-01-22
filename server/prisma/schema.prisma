@@ -1,0 +1,187 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  passwordHash     String
+  name             String
+  age              Int?
+  gender           String?
+  occupation       String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @updatedAt
+  isVerified       Boolean   @default(false)
+  profilePictureUrl String?
+
+  // Relations
+  preferences      UserPreferences?
+  location         UserLocation?
+  contact          UserContact?
+  listings         HousingListing[]
+  sentRequests     ConnectionRequest[] @relation("SentRequests")
+  receivedRequests ConnectionRequest[] @relation("ReceivedRequests")
+  sentMessages     Message[]          @relation("SentMessages")
+  receivedMessages Message[]          @relation("ReceivedMessages")
+  verifications    UserVerification[]
+
+  @@map("users")
+}
+
+model UserPreferences {
+  id                Int      @id @default(autoincrement())
+  userId            Int      @unique
+  smokingPreference String?  @default("Non-Smoker")
+  sleepSchedule     String?
+  cleanlinessLevel  String?
+  guestPreference   String?
+  budgetMin         Decimal?
+  budgetMax         Decimal?
+  moveInDate        DateTime?
+  lookingForRoommates Boolean @default(true)
+  
+  // Relations
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model UserLocation {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @unique
+  streetAddress  String?
+  city           String
+  state          String
+  zipCode        String
+  latitude       Decimal? @db.Decimal(10,8)
+  longitude      Decimal? @db.Decimal(11,8)
+
+  // Relations
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_locations")
+}
+
+model UserContact {
+  id                    Int      @id @default(autoincrement())
+  userId                Int      @unique
+  phone                 String?
+  socialMediaLinks      Json?
+  preferredContactMethod String?
+
+  // Relations
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_contacts")
+}
+
+model HousingListing {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  title           String
+  description     String?
+  monthlyRent     Decimal
+  securityDeposit Decimal?
+  availableFrom   DateTime?
+  roomCount       Int?
+  bathroomCount   Int?
+  totalArea       Decimal?
+  furnished       Boolean   @default(false)
+  petsAllowed     Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+  status          String    @default("ACTIVE")
+
+  // Relations
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location        ListingLocation?
+  amenities       ListingAmenities[]
+
+  @@map("housing_listings")
+}
+
+model ListingLocation {
+  id            Int            @id @default(autoincrement())
+  listingId     Int            @unique
+  streetAddress String
+  city          String
+  state         String
+  zipCode       String
+  latitude      Decimal?       @db.Decimal(10,8)
+  longitude     Decimal?       @db.Decimal(11,8)
+
+  // Relations
+  listing       HousingListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@map("listing_locations")
+}
+
+model ListingAmenities {
+  listingId Int
+  amenity   String
+
+  // Relations
+  listing   HousingListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([listingId, amenity])
+  @@map("listing_amenities")
+}
+
+model ConnectionRequest {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  // Relations
+  sender     User     @relation("SentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@map("connection_requests")
+}
+
+model Message {
+  id         Int       @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  content    String
+  sentAt     DateTime  @default(now())
+  readAt     DateTime?
+  isEncrypted Boolean  @default(true)
+
+  // Relations
+  sender     User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User      @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model UserVerification {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  verificationType  String
+  verificationStatus String
+  verifiedAt        DateTime?
+  verificationData  Json?
+
+  // Relations
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, verificationType])
+  @@map("user_verifications")
+}
