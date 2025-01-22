@@ -5,7 +5,6 @@ import Home from './pageComponents/Home';
 import Search from './pageComponents/Search';
 import Message from './pageComponents/Message';
 import Profile from './pageComponents/Profile';
-import MainLayout from './pageComponents/mainLayout';
 import Navbar from './pageComponents/Navbar';
 import Auth from './pageComponents/Auth';
 import NewListingForm from './pageComponents/NewListingForm';
