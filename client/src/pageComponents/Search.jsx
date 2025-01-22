@@ -76,7 +76,7 @@ const Search = () => {
                 limit: 10
             });
 
-            const response = await fetch(`http://localhost:8000/api/recommendations/getRoommatesBySearch/?${queryParams}`);
+            const response = await fetch(`https://flatmate-c9up.onrender.com/api/recommendations/getRoommatesBySearch/?${queryParams}`);
             const data = await response.json();
 
             console.log(data)
@@ -103,7 +103,7 @@ const Search = () => {
             // Assuming we have the current user's ID stored somewhere
             const userId = 2; // Or however you store the current user's ID
 
-            const response = await fetch('http://localhost:8000/api/recommendations/getRommatesByRecommendations', {
+            const response = await fetch('https://flatmate-c9up.onrender.com/api/recommendations/getRommatesByRecommendations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ export default function ListingsByUser() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const {auth} = useAuth();
+  const { auth } = useAuth();
 
   useEffect(() => {
 
@@ -49,10 +49,10 @@ export default function ListingsByUser() {
         const userId = auth.userId || localStorage.getItem('userId');
 
         // Using the API endpoint from your controller
-        const response = await axios.get(`http://localhost:8000/api/listings/getListingsByUser/${userId}`);
+        const response = await axios.get(`https://flatmate-c9up.onrender.com/api/listings/getListingsByUser/${userId}`);
 
         if (response.status !== 200) {
-            console.log(response)
+          console.log(response)
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         console.log(response)
@@ -68,7 +68,7 @@ export default function ListingsByUser() {
     }
 
     getAllListings();
-  },[])
+  }, [])
 
   if (loading) {
     return (
@@ -103,10 +103,10 @@ export default function ListingsByUser() {
   }
 
   const handleDelete = (deletedId) => {
-    setListing(prevListings => 
-        prevListings.filter(listing => listing.id !== deletedId)
+    setListing(prevListings =>
+      prevListings.filter(listing => listing.id !== deletedId)
     )
-}
+  }
 
   return (
     <div className="container mx-auto p-6">

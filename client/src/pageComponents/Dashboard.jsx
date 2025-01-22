@@ -25,7 +25,7 @@ const Dashboard = () => {
         const getProfileInfo = async () => {
           try {
             const user_id = localStorage.getItem('userId')
-            const response = await axios.get(`http://localhost:8000/api/users/profile/getUserProfile/${user_id}`);
+            const response = await axios.get(`https://flatmate-c9up.onrender.com/api/users/profile/getUserProfile/${user_id}`);
             setUserData(response.data)
           } catch (error) {
             console.log(`Error in getting user info`, error)
@@ -77,7 +77,7 @@ const Dashboard = () => {
                 Post Listing
               </Button>
             </Link>
-              <SettingsDropdown />
+            <SettingsDropdown />
           </div>
         </nav>
       </div>

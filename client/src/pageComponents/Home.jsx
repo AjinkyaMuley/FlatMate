@@ -50,7 +50,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const getAllListings = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/listings/getAllListings');
+      const response = await axios.get('https://flatmate-c9up.onrender.com/api/listings/getAllListings');
       setListingsData(response.data)
       setLoading(false)
       console.log(listingsData)

@@ -57,7 +57,7 @@ const ProfileUpdateForm = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/users/profile/getUserProfile/${userId}`);
+                const response = await fetch(`https://flatmate-c9up.onrender.com/api/users/profile/getUserProfile/${userId}`);
                 const data = await response.json();
                 console.log(data)
                 setProfile(data);
@@ -95,7 +95,7 @@ const ProfileUpdateForm = () => {
         setLoading(true);
         try {
             // Update basic profile
-            await fetch(`http://localhost:8000/api/users/profile/updateUserProfile/${userId}`, {
+            await fetch(`https://flatmate-c9up.onrender.com/api/users/profile/updateUserProfile/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -109,7 +109,7 @@ const ProfileUpdateForm = () => {
             });
 
             // Update preferences and other details
-            await fetch(`http://localhost:8000/api/users/profile/updateUserPreferences/${userId}`, {
+            await fetch(`https://flatmate-c9up.onrender.com/api/users/profile/updateUserPreferences/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -21,9 +21,9 @@ const ListingCard = ({ listing, index, canDelete, onDelete }) => {
     const handleDelete = async () => {
         setIsLoading(true)
         setError('')
-        
+
         try {
-            await axios.delete(`http://localhost:8000/api/listings/deleteListings/${listing.id}`)
+            await axios.delete(`https://flatmate-c9up.onrender.com/api/listings/deleteListings/${listing.id}`)
             setIsDeleted(true)
             // Notify parent component to update the list
             if (onDelete) {
@@ -73,9 +73,9 @@ const ListingCard = ({ listing, index, canDelete, onDelete }) => {
                     </Button>
                 </Link>
                 {canDelete && (
-                    <Button 
-                        className="mt-4 ml-5 bg-red-400 hover:bg-red-500" 
-                        onClick={handleDelete} 
+                    <Button
+                        className="mt-4 ml-5 bg-red-400 hover:bg-red-500"
+                        onClick={handleDelete}
                         variant="outline"
                         disabled={isLoading}
                     >

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -26,7 +26,7 @@ const Auth = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const {login} = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const Auth = () => {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const endpoint = isLogin ? 'http://localhost:8000/api/auth/login' : 'http://localhost:8000/api/auth/signup';
+      const endpoint = isLogin ? 'https://flatmate-c9up.onrender.com/api/auth/login' : 'https://flatmate-c9up.onrender.com/api/auth/signup';
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -54,18 +54,17 @@ const Auth = () => {
 
       // Store token and redirect
       localStorage.setItem('token', result.token);
-      localStorage.setItem('userId',result.user.id);
-      localStorage.setItem('user_login',true);
-      login(result.user.id,result.user,result.token,true);
-      if(isLogin)
-      {
+      localStorage.setItem('userId', result.user.id);
+      localStorage.setItem('user_login', true);
+      login(result.user.id, result.user, result.token, true);
+      if (isLogin) {
         window.location.href = '/dashboard';
       }
-      else{
+      else {
         window.location.href = '/profileCompletion';
       }
       console.log(result);
-      
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -84,8 +83,8 @@ const Auth = () => {
             {isLogin ? 'Welcome Back' : 'Create Account'}
           </CardTitle>
           <CardDescription className="text-center">
-            {isLogin 
-              ? 'Enter your credentials to access your account' 
+            {isLogin
+              ? 'Enter your credentials to access your account'
               : 'Sign up to find your perfect roommate match'}
           </CardDescription>
         </CardHeader>
@@ -93,21 +92,21 @@ const Auth = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                name="email" 
-                type="email" 
-                placeholder="name@example.com" 
-                required 
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="name@example.com"
+                required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                name="password" 
-                type="password" 
-                required 
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
               />
             </div>
 
@@ -115,21 +114,21 @@ const Auth = () => {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input 
-                    id="name" 
-                    name="name" 
-                    required 
+                  <Input
+                    id="name"
+                    name="name"
+                    required
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="age">Age</Label>
-                    <Input 
-                      id="age" 
-                      name="age" 
-                      type="number" 
-                      min="18" 
-                      required 
+                    <Input
+                      id="age"
+                      name="age"
+                      type="number"
+                      min="18"
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -148,11 +147,11 @@ const Auth = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="occupation">Occupation</Label>
-                  <Input 
-                    id="occupation" 
-                    name="occupation" 
-                    placeholder="Student, Professional, etc." 
-                    required 
+                  <Input
+                    id="occupation"
+                    name="occupation"
+                    placeholder="Student, Professional, etc."
+                    required
                   />
                 </div>
               </>
@@ -164,9 +163,9 @@ const Auth = () => {
               </Alert>
             )}
 
-            <Button 
-              type="submit" 
-              className="w-full" 
+            <Button
+              type="submit"
+              className="w-full"
               disabled={loading}
             >
               {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
@@ -176,9 +175,9 @@ const Auth = () => {
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-gray-500">
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <Button 
-              variant="link" 
-              onClick={() => setIsLogin(!isLogin)} 
+            <Button
+              variant="link"
+              onClick={() => setIsLogin(!isLogin)}
               className="ml-1"
             >
               {isLogin ? 'Sign up' : 'Sign in'}

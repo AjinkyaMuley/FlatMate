@@ -34,24 +34,24 @@ const MessageToOwner = () => {
     const formatMessageTimestamp = (sentAt) => {
         const messageDate = new Date(sentAt);
         const today = new Date();
-        
+
         const isToday = (date) => {
             return date.getDate() === today.getDate() &&
-                   date.getMonth() === today.getMonth() &&
-                   date.getFullYear() === today.getFullYear();
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear();
         };
-        
+
         const isYesterday = (date) => {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             return date.getDate() === yesterday.getDate() &&
-                   date.getMonth() === yesterday.getMonth() &&
-                   date.getFullYear() === yesterday.getFullYear();
+                date.getMonth() === yesterday.getMonth() &&
+                date.getFullYear() === yesterday.getFullYear();
         };
-      
+
         if (isToday(messageDate)) {
-            return messageDate.toLocaleTimeString([], { 
-                hour: '2-digit', 
+            return messageDate.toLocaleTimeString([], {
+                hour: '2-digit',
                 minute: '2-digit'
             });
         } else if (isYesterday(messageDate)) {
@@ -109,7 +109,7 @@ const MessageToOwner = () => {
     useEffect(() => {
         const fetchUserId = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/users/profile/getUserProfile/${selectedUserId}`)
+                const response = await fetch(`https://flatmate-c9up.onrender.com/api/users/profile/getUserProfile/${selectedUserId}`)
 
                 const data = await response.json();
 
@@ -121,24 +121,24 @@ const MessageToOwner = () => {
         }
 
         fetchUserId();
-    },[])
+    }, [])
 
     // Fetch all messages for current user
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/message/get-all-messages/${currentUserId}`);
+                const response = await fetch(`https://flatmate-c9up.onrender.com/api/message/get-all-messages/${currentUserId}`);
                 const data = await response.json();
-                
+
                 const conversationsMap = new Map();
-                
+
                 data.forEach(message => {
-                    const otherUserId = message.senderId == currentUserId 
-                        ? message.receiverId 
+                    const otherUserId = message.senderId == currentUserId
+                        ? message.receiverId
                         : message.senderId;
-                    
+
                     const name = getOtherPersonName(message, currentUserId);
-                    
+
                     if (!conversationsMap.has(otherUserId)) {
                         conversationsMap.set(otherUserId, {
                             id: otherUserId,
@@ -149,7 +149,7 @@ const MessageToOwner = () => {
                         });
                     }
                 });
-                
+
                 setConversations([...conversationsMap.values()]);
             } catch (error) {
                 console.error('Error fetching messages:', error);
@@ -165,9 +165,9 @@ const MessageToOwner = () => {
     useEffect(() => {
         const fetchConversationMessages = async () => {
             if (!selectedUser) return;
-            
+
             try {
-                const response = await fetch(`http://localhost:8000/api/message/get-message-by-user/${currentUserId}`, {
+                const response = await fetch(`https://flatmate-c9up.onrender.com/api/message/get-message-by-user/${currentUserId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ const MessageToOwner = () => {
                         receiverId: selectedUser.id
                     })
                 });
-                
+
                 const data = await response.json();
                 setMessages(data.map(msg => ({
                     id: msg.id,
@@ -197,7 +197,7 @@ const MessageToOwner = () => {
 
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8000/api/message/send-message', {
+            const response = await fetch('https://flatmate-c9up.onrender.com/api/message/send-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ const MessageToOwner = () => {
                 };
 
                 setMessages(prev => [...prev, newMessageObj]);
-                
+
                 // Emit the message through socket
                 const roomId = [currentUserId, selectedUser.id].sort().join('-');
                 socket.emit("send_message", {
@@ -262,9 +262,8 @@ const MessageToOwner = () => {
                         {conversations.map((conversation) => (
                             <div
                                 key={conversation.id}
-                                className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${
-                                    selectedUser?.id === conversation.id ? 'bg-gray-50' : ''
-                                }`}
+                                className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${selectedUser?.id === conversation.id ? 'bg-gray-50' : ''
+                                    }`}
                                 onClick={() => setSelectedUser(conversation)}
                             >
                                 <div className="flex items-center gap-3">
@@ -350,7 +349,7 @@ const MessageToOwner = () => {
                                             }
                                         }}
                                     />
-                                    <Button 
+                                    <Button
                                         onClick={handleSendMessage}
                                         disabled={loading || !newMessage.trim()}
                                     >

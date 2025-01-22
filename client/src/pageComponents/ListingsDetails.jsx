@@ -44,7 +44,7 @@ const ListingDetailsPage = () => {
         setError(null);
 
         // Using the API endpoint from your controller
-        const response = await axios.get(`http://localhost:8000/api/listings/getAllListingsById/${id}`);
+        const response = await axios.get(`https://flatmate-c9up.onrender.com/api/listings/getAllListingsById/${id}`);
 
         if (response.status !== 200) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -87,7 +87,7 @@ const ProfileCompletion = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/profile/completeUserProfile/${9}`, {
+      const response = await fetch(`https://flatmate-c9up.onrender.com/api/users/profile/completeUserProfile/${9}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
